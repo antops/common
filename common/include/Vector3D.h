@@ -2,7 +2,7 @@
 #ifndef Vector3D_H
 #define Vector3D_H
 #include "Position3D.h"
-namespace TBTBack {
+namespace Common {
 	class Vector3D :public Position3D
 	{
 	public:

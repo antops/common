@@ -1,4 +1,4 @@
-#include "MyLog.h"  
+#include "../include/MyLog.h"  
 #include <cstdlib>  
 #include <ctime>  
 
@@ -27,9 +27,9 @@ std::ostream& Logger::start(log_rank_t log_rank,
 	const int32_t line,
 	const std::string&function) {
 	if (!m_init_flag) {
-		initLogger("C:/Users/ly/Desktop/TBT/log/info.txt",
-			"C:/Users/ly/Desktop/TBT/log/warn.txt", 
-			"C:/Users/ly/Desktop/TBT/log/error.txt");
+		initLogger("./info.txt",
+			"./warn.txt", 
+			"./error.txt");
 		m_init_flag = true;
 	}
 	time_t tm;
