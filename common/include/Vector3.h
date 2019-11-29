@@ -92,6 +92,8 @@ namespace Common {
 				+ std::to_string(z) + ")";
 		}
 
+		size_t Size() const { return sizeof(x) * 3; }
+
 		void Save(std::ofstream & savefile) const {
 			savefile << x << " "
 				<< y << " "

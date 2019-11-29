@@ -6,12 +6,15 @@ std::ofstream Logger::m_error_log_file;
 std::ofstream Logger::m_info_log_file;
 std::ofstream Logger::m_warn_log_file;
 bool Logger::m_init_flag = false;
+bool Logger::m_show_line_flag = true;
 void initLogger(const std::string&info_log_filename,
 	const std::string&warn_log_filename,
-	const std::string&error_log_filename) {
+	const std::string&error_log_filename,
+	bool is_show_line) {
 	Logger::m_info_log_file.open(info_log_filename.c_str());
 	Logger::m_warn_log_file.open(warn_log_filename.c_str());
 	Logger::m_error_log_file.open(error_log_filename.c_str());
+	Logger::m_show_line_flag = is_show_line;
 	
 }
 
@@ -27,9 +30,7 @@ std::ostream& Logger::start(log_rank_t log_rank,
 	const int32_t line,
 	const std::string&function) {
 	if (!m_init_flag) {
-		initLogger("./info.txt",
-			"./warn.txt", 
-			"./error.txt");
+		initLogger("./info.txt", "./warn.txt", "./error.txt", true);
 		m_init_flag = true;
 	}
 	time_t tm;

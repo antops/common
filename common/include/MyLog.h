@@ -24,7 +24,8 @@ typedef enum log_rank {
 /// \param error_log_filename 错误文件的名字  
 void initLogger(const std::string&info_log_filename,
 	const std::string&warn_log_filename,
-	const std::string&error_log_filename);
+	const std::string&error_log_filename,
+	bool is_show_line);
 
 ///  
 /// \brief 日志系统类  
@@ -32,7 +33,8 @@ void initLogger(const std::string&info_log_filename,
 class Logger {
 	friend void initLogger(const std::string& info_log_filename,
 		const std::string& warn_log_filename,
-		const std::string& erro_log_filename);
+		const std::string& erro_log_filename,
+		bool is_show_line);
 
 public:
 	//构造函数  
@@ -59,6 +61,7 @@ private:
 	static std::ofstream m_error_log_file;                  ///< 错误信息的输出流  
 	log_rank_t m_log_rank;                             ///< 日志的信息的等级 
 	static bool m_init_flag;
+	static bool m_show_line_flag;
 };
 
 

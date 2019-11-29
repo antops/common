@@ -1,6 +1,6 @@
 #pragma once
 #include "Vector3.h"
-
+#include <string>
 namespace Common {
 	struct Coordinate {
 		Vector3 U;
@@ -23,9 +23,19 @@ namespace Common {
 				+ "rotate_axis" + rotate_axis.Debug();
 		}
 
+		size_t Size() const {
+			return U.Size() + V.Size() + N.Size()
+				+ pos.Size() + rotate_axis.Size()
+				+ sizeof(double) * 2;
+		}
+
 		void Save(std::ofstream & savefile) const;
 
 		void Open(std::ifstream & readfile);
+
+		std::string Serialize() const;
+		void UnSerialize(const char* p, size_t size);
+		void UnSerialize(const std::string& buffer);
 
 		bool SetUV(const Vector3& u, const Vector3& v);
 		void SetRotate(const Vector3& axis, double theta);
