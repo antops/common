@@ -26,19 +26,18 @@ namespace Common {
 		rotate_axis.Open(readfile);
 		readfile >> rotate_theta >> scale;
 	}
-
-	std::string Coordinate::Serialize() const
+	void Coordinate::Serialize(std::string& buffer) const
 	{
-		std::string buffer = U.Serialize() + V.Serialize()
+		buffer += U.Serialize() + V.Serialize()
 			+ N.Serialize() + pos.Serialize() + rotate_axis.Serialize();
 		buffer.append(reinterpret_cast<const char*>(&rotate_theta), sizeof(rotate_theta));
 		buffer.append(reinterpret_cast<const char*>(&scale), sizeof(scale));
-		return std::string();
+		return;
 	}
 
-	void Coordinate::UnSerialize(const char * p, size_t size)
+	int Coordinate::UnSerialize(const char * p, size_t size)
 	{
-		if (size != Size()) return;
+		if (size != Size()) return -1;
 		U.UnSerialize(p, U.Size());
 		p += U.Size();
 		V.UnSerialize(p, V.Size());
@@ -52,9 +51,10 @@ namespace Common {
 		memcpy(&rotate_theta, p, sizeof(double));
 		p += sizeof(double);
 		memcpy(&scale, p, sizeof(double));
+		return 0;
 	}
 
-	void Coordinate::UnSerialize(const std::string & buffer)
+	int Coordinate::UnSerialize(const std::string & buffer)
 	{
 		return UnSerialize(buffer.c_str(), buffer.size());
 	}

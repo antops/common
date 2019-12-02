@@ -21,15 +21,18 @@
   <ItemGroup>
     <ClInclude Include="include\component_param.h" />
     <ClInclude Include="include\coordinate.h" />
+    <ClInclude Include="include\field_base.h" />
     <ClInclude Include="include\Matrix4D.h" />
     <ClInclude Include="include\MyLog.h" />
     <ClInclude Include="include\Position3D.h" />
+    <ClInclude Include="include\ray_line_cluster.h" />
     <ClInclude Include="include\Vector3.h" />
     <ClInclude Include="include\Vector3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\component_param.cpp" />
     <ClCompile Include="src\coordinate.cpp" />
+    <ClCompile Include="src\field_base.cpp" />
     <ClCompile Include="src\Matrix4D.cpp" />
     <ClCompile Include="src\MyLog.cpp" />
     <ClCompile Include="src\Position3D.cpp" />

@@ -14,10 +14,11 @@ namespace Common {
 				+ "param size:" + std::to_string(param.size());
 		}
 
-		std::string Serialize() const;
-		void UnSerialize(const char* p, size_t size);
-		void UnSerialize(const std::string& buffer);
+		void Serialize(std::string& buffer) const;
+		int UnSerialize(const char* p, size_t size);
+		int UnSerialize(const std::string& buffer);
 	};
+
 	struct ComponentParam {
 		std::string name;
 		std::vector<double> param;
@@ -33,9 +34,9 @@ namespace Common {
 				+ "restriction size:" + std::to_string(restriction.size());
 		}
 
-		std::string Serialize() const;
-		void UnSerialize(const char* p, size_t size);
-		void UnSerialize(const std::string& buffer);
+		void Serialize(std::string& buffer) const;
+		int UnSerialize(const char* p, size_t size);
+		int UnSerialize(const std::string& buffer);
 
 	};
 }

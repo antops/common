@@ -36,6 +36,12 @@
     <ClInclude Include="include\component_param.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\ray_line_cluster.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\field_base.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MyLog.cpp">
@@ -54,6 +60,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="include\component_param.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\field_base.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -103,7 +103,6 @@ namespace Common {
 		void Open(std::ifstream & readfile) {
 			readfile >> x >> y >> z;
 		}
-
 		std::string Serialize(bool is_double = true) const {
 			std::string buffer;
 			if (is_double) {
@@ -123,7 +122,7 @@ namespace Common {
 			return buffer;
 		}
 
-		void UnSerialize(const char* p, size_t size) {
+		int UnSerialize(const char* p, size_t size) {
 			if (size == sizeof(double) * 3) {
 				memcpy(&x, p, sizeof(double));
 				p += sizeof(double);
@@ -144,10 +143,11 @@ namespace Common {
 				y = y1;
 				z = z1;
 			}
-			return;
+			else return -1;
+			return 0;
 		}
 
-		void UnSerialize(const std::string& buffer) {
+		int UnSerialize(const std::string& buffer) {
 			const char* p = buffer.c_str();
 			return UnSerialize(p, buffer.size());
 		}

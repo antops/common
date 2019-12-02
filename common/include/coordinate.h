@@ -33,9 +33,9 @@ namespace Common {
 
 		void Open(std::ifstream & readfile);
 
-		std::string Serialize() const;
-		void UnSerialize(const char* p, size_t size);
-		void UnSerialize(const std::string& buffer);
+		void Serialize(std::string& buffer) const;
+		int UnSerialize(const char* p, size_t size);
+		int UnSerialize(const std::string& buffer);
 
 		bool SetUV(const Vector3& u, const Vector3& v);
 		void SetRotate(const Vector3& axis, double theta);

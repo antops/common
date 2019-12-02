@@ -26,5 +26,8 @@
     <ClInclude Include="coordinate_test.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="field_base_test.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
