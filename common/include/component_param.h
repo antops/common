@@ -37,6 +37,6 @@ namespace Common {
 		void Serialize(std::string& buffer) const;
 		int UnSerialize(const char* p, size_t size);
 		int UnSerialize(const std::string& buffer);
-
+		
 	};
 }

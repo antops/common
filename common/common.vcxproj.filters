@@ -42,6 +42,15 @@
     <ClInclude Include="include\field_base.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\Cylinder_field_base.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Constant_Var.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\HuygensBoxData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MyLog.cpp">
@@ -63,6 +72,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\field_base.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Cylinder_field_base.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HuygensBoxData.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
