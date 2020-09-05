@@ -35,14 +35,6 @@ namespace Common {
 			Hr.clear();
 		}
 
-		size_t Size() const;
-		int Open(const std::string& file_name);
-		int Save(const std::string& file_name) const;
-
-		void Serialize(std::string& buffer) const;
-		int UnSerialize(const char* p, size_t size);
-		int UnSerialize(const std::string& buffer);
-
 		int writeFieldBase(const std::string& path);
 		int readFieldBase(const std::string& path);
 

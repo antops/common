@@ -9,7 +9,6 @@
 #include <cmath>
 #include <string>
 #include <iostream>
-#include <fstream>
 
 namespace Common {
 
@@ -90,66 +89,6 @@ namespace Common {
 			return "(" + std::to_string(x) + ","
 				+ std::to_string(y) + ","
 				+ std::to_string(z) + ")";
-		}
-
-		size_t Size() const { return sizeof(x) * 3; }
-
-		void Save(std::ofstream & savefile) const {
-			savefile << x << " "
-				<< y << " "
-				<< z << " ";
-		}
-
-		void Open(std::ifstream & readfile) {
-			readfile >> x >> y >> z;
-		}
-		std::string Serialize(bool is_double = true) const {
-			std::string buffer;
-			if (is_double) {
-				buffer.append(reinterpret_cast<const char*>(&x), sizeof(x));
-				buffer.append(reinterpret_cast<const char*>(&y), sizeof(y));
-				buffer.append(reinterpret_cast<const char*>(&z), sizeof(z));
-			}
-			else {
-				float x1 = x;
-				float y1 = y;
-				float z1 = z;
-
-				buffer.append(reinterpret_cast<const char*>(&x1), sizeof(x1));
-				buffer.append(reinterpret_cast<const char*>(&y1), sizeof(y1));
-				buffer.append(reinterpret_cast<const char*>(&z1), sizeof(z1));
-			}
-			return buffer;
-		}
-
-		int UnSerialize(const char* p, size_t size) {
-			if (size == sizeof(double) * 3) {
-				memcpy(&x, p, sizeof(double));
-				p += sizeof(double);
-				memcpy(&y, p, sizeof(double));
-				p += sizeof(double);
-				memcpy(&z, p, sizeof(double));
-			}
-			else if (size == sizeof(float) * 3) {
-				float x1 = 0.0;
-				float y1 = 0.0;
-				float z1 = 0.0;
-				memcpy(&x1, p, sizeof(float));
-				p += sizeof(float);
-				memcpy(&y1, p, sizeof(float));
-				p += sizeof(float);
-				memcpy(&z1, p, sizeof(float));
-				x = x1;
-				y = y1;
-				z = z1;
-			}
-			else return -1;
-			return 0;
-		}
-
-		int UnSerialize(const std::string& buffer) {
-			const char* p = buffer.c_str();
-			return UnSerialize(p, buffer.size());
 		}
 
 		double x, y, z;

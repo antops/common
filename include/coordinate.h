@@ -23,20 +23,6 @@ namespace Common {
 				+ "rotate_axis" + rotate_axis.Debug();
 		}
 
-		size_t Size() const {
-			return U.Size() + V.Size() + N.Size()
-				+ pos.Size() + rotate_axis.Size()
-				+ sizeof(double) * 2;
-		}
-
-		void Save(std::ofstream & savefile) const;
-
-		void Open(std::ifstream & readfile);
-
-		void Serialize(std::string& buffer) const;
-		int UnSerialize(const char* p, size_t size);
-		int UnSerialize(const std::string& buffer);
-
 		bool SetUV(const Vector3& u, const Vector3& v);
 		void SetRotate(const Vector3& axis, double theta);
 	};
