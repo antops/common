@@ -31,6 +31,7 @@
     <ClInclude Include="include\ray_line_cluster.h" />
     <ClInclude Include="include\Vector3.h" />
     <ClInclude Include="include\Vector3D.h" />
+    <ClInclude Include="progress_manager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\component_param.cpp" />
