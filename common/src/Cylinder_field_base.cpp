@@ -49,6 +49,135 @@ namespace Common {
 		return 0;
 	}
 
+	size_t CylinderFieldBase::Size() const
+	{
+		size_t size = coor.Size()
+			+ 6 * sizeof(bool)
+			+ 2 * sizeof(size_t)
+			+ sizeof(ds_phi)
+			+ sizeof(ds_z)
+			+ sizeof(frequency);
+		if (Ephi.empty()) return size;
+		size_t n = Ephi.size();
+		size_t m = Ephi[0].size();
+		if (!Ephi.empty()) size += n * m * sizeof(double) * 2;
+		if (!Ez.empty()) size += n * m * sizeof(double) * 2;
+		if (!Er.empty()) size += n * m * sizeof(double) * 2;
+		if (!Hphi.empty()) size += n * m * sizeof(double) * 2;
+		if (!Hz.empty()) size += n * m * sizeof(double) * 2;
+		if (!Hr.empty()) size += n * m * sizeof(double) * 2;
+
+		return size;
+	}
+
+	int CylinderFieldBase::Open(const std::string & file_name)
+	{
+		std::ifstream in(file_name);
+		if (!in.is_open()) return -1;
+		std::string buffer((std::istreambuf_iterator<char>(in)),
+			std::istreambuf_iterator<char>());
+		in.close();
+		return UnSerialize(buffer);
+	}
+
+	int CylinderFieldBase::Save(const std::string & file_name) const
+	{
+		std::ofstream out(file_name);
+		if (!out.is_open()) return -1;
+		std::string buffer;
+		Serialize(buffer);
+		out.write(buffer.c_str(), buffer.size());
+		out.close();
+		return 0;
+
+	}
+
+	void CylinderFieldBase::Serialize(std::string& buffer) const
+	{
+		std::cout << "coor.Size():" << coor.Size() << std::endl;
+		std::cout << "size:" << Size() << std::endl;
+		buffer.reserve(Size());
+		coor.Serialize(buffer);
+		if (Ephi.empty()) {
+			bool flag = false;
+			size_t n = 0;
+			size_t m = 0;
+			buffer.append(reinterpret_cast<const char*>(&n), sizeof(n));
+			buffer.append(reinterpret_cast<const char*>(&m), sizeof(m));
+			buffer.append(reinterpret_cast<const char*>(&flag), sizeof(flag));
+			buffer.append(reinterpret_cast<const char*>(&flag), sizeof(flag));
+			buffer.append(reinterpret_cast<const char*>(&flag), sizeof(flag));
+			buffer.append(reinterpret_cast<const char*>(&flag), sizeof(flag));
+			buffer.append(reinterpret_cast<const char*>(&flag), sizeof(flag));
+			buffer.append(reinterpret_cast<const char*>(&flag), sizeof(flag));
+		}
+		else {
+			size_t n = Ephi.size();
+			size_t m = Ephi[0].size();
+			buffer.append(reinterpret_cast<const char*>(&n), sizeof(n));
+			buffer.append(reinterpret_cast<const char*>(&m), sizeof(m));
+			CDumpEHxyz(Ephi, buffer, n, m);
+			CDumpEHxyz(Ez, buffer, n, m);
+			CDumpEHxyz(Er, buffer, n, m);
+			CDumpEHxyz(Hphi, buffer, n, m);
+			CDumpEHxyz(Hz, buffer, n, m);
+			CDumpEHxyz(Hr, buffer, n, m);
+		}
+		buffer.append(reinterpret_cast<const char*>(&ds_phi), sizeof(ds_phi));
+		buffer.append(reinterpret_cast<const char*>(&ds_z), sizeof(ds_z));
+		buffer.append(reinterpret_cast<const char*>(&centerphi), sizeof(centerphi));
+		buffer.append(reinterpret_cast<const char*>(&centerz), sizeof(centerz));
+		buffer.append(reinterpret_cast<const char*>(&frequency), sizeof(frequency));
+		return;
+	}
+
+	int CylinderFieldBase::UnSerialize(const char * p, size_t size)
+	{
+		if (size < coor.Size()) return -1;
+		int ret = coor.UnSerialize(p, coor.Size());
+		p += coor.Size();
+		size -= coor.Size();
+		if (ret != 0) return ret;
+		size_t n = 0;
+		size_t m = 0;
+		memcpy(&n, p, sizeof(size_t));
+		p += sizeof(size_t);
+		size -= sizeof(size_t);
+		memcpy(&m, p, sizeof(size_t));
+		p += sizeof(size_t);
+		size -= sizeof(size_t);
+		if (CLoadEHxyz(Ephi, p, n, m, size) != 0) return -1;
+		if (CLoadEHxyz(Ez, p, n, m, size) != 0) return -1;
+		if (CLoadEHxyz(Er, p, n, m, size) != 0) return -1;
+
+		if (CLoadEHxyz(Hphi, p, n, m, size) != 0) return -1;
+		if (CLoadEHxyz(Hz, p, n, m, size) != 0) return -1;
+		if (CLoadEHxyz(Hr, p, n, m, size) != 0) return -1;
+
+		if (size < sizeof(ds_phi) * 5) return -1;
+		memcpy(&ds_phi, p, sizeof(ds_phi));
+		p += sizeof(ds_phi);
+		size -= sizeof(ds_phi);
+		memcpy(&ds_z, p, sizeof(ds_z));
+		p += sizeof(ds_z);
+		size -= sizeof(ds_z);
+		memcpy(&centerphi, p, sizeof(centerphi));
+		p += sizeof(centerphi);
+		size -= sizeof(centerphi);
+		memcpy(&centerz, p, sizeof(centerz));
+		p += sizeof(centerz);
+		size -= sizeof(centerz);
+		memcpy(&frequency, p, sizeof(frequency));
+		p += sizeof(frequency);
+		size -= sizeof(frequency);
+		return 0;
+	}
+
+	int CylinderFieldBase::UnSerialize(const std::string & buffer)
+	{
+		return UnSerialize(buffer.c_str(), buffer.size());
+	}
+
 	int CylinderFieldBase::writeFieldBase(const std::string & path)
 	{
 

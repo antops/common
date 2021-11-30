@@ -8,6 +8,56 @@
 using namespace Eigen;
 
 namespace Common {
+	void Coordinate::Save(std::ofstream & savefile) const {
+		U.Save(savefile);
+		V.Save(savefile);
+		N.Save(savefile);
+		pos.Save(savefile);
+		rotate_axis.Save(savefile);
+		savefile << " " << rotate_theta << " " << scale;
+	}
+
+	void Coordinate::Open(std::ifstream & readfile)
+	{
+		U.Open(readfile);
+		V.Open(readfile);
+		N.Open(readfile);
+		pos.Open(readfile);
+		rotate_axis.Open(readfile);
+		readfile >> rotate_theta >> scale;
+	}
+	void Coordinate::Serialize(std::string& buffer) const
+	{
+		buffer += U.Serialize() + V.Serialize()
+			+ N.Serialize() + pos.Serialize() + rotate_axis.Serialize();
+		buffer.append(reinterpret_cast<const char*>(&rotate_theta), sizeof(rotate_theta));
+		buffer.append(reinterpret_cast<const char*>(&scale), sizeof(scale));
+		return;
+	}
+
+	int Coordinate::UnSerialize(const char * p, size_t size)
+	{
+		if (size != Size()) return -1;
+		U.UnSerialize(p, U.Size());
+		p += U.Size();
+		V.UnSerialize(p, V.Size());
+		p += V.Size();
+		N.UnSerialize(p, N.Size());
+		p += N.Size();
+		pos.UnSerialize(p, pos.Size());
+		p += pos.Size();
+		rotate_axis.UnSerialize(p, rotate_axis.Size());
+		p += rotate_axis.Size();
+		memcpy(&rotate_theta, p, sizeof(double));
+		p += sizeof(double);
+		memcpy(&scale, p, sizeof(double));
+		return 0;
+	}
+
+	int Coordinate::UnSerialize(const std::string & buffer)
+	{
+		return UnSerialize(buffer.c_str(), buffer.size());
+	}
 
 	bool Coordinate::SetUV(const Vector3 & u, const Vector3 & v) {
 		Vector3 tmpU = u;
